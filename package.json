@@ -1,0 +1,17 @@
+{
+  "name": "dd_node_apm_bunyan",
+  "version": "1.0.0",
+  "description": "testing trace id injection into logs with bunyan",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Mustin",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bunyan": "^1.8.12",
+    "dd-trace": "^0.15.3",
+    "express": "^4.17.1"
+  }
+}
