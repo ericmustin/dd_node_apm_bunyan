@@ -4,8 +4,9 @@ Example of Trace ID injection into logs with Bunyan and DD-Trace
 
 ## SETUP
 
-from root of this repository
+Ensure the Agent is running on your host with APM enabled, listening for traces at localhost:8126 (setup instructions [here](https://docs.datadoghq.com/agent/basic_agent_usage/?tab=agentv6) )
 
+- `cd dd_node_apm_bunyan`
 - `npm install`
 - `node index.js`
 - from a different terminal window `curl localhost:3000`
