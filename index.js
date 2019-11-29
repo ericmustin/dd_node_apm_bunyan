@@ -1,32 +1,42 @@
 const tracer = require('dd-trace').init({
-  logInjection: true
+  logInjection: false //enable by setting to true to demonstrate 
 });
-const axios = require('axios');
+
+const tracer = require('dd-trace').init({
+  logInjection: true //
+});
+
 const express = require('express');
-const bunyan = require('bunyan'); 
-const log = bunyan.createLogger({ 
-  name: 'general-display-web',
-  streams: [
-    {
-      level: 'info',
-      path: 'logs.json'
-    }
-  ] 
+const winston = require('winston');
+const log = winston.createLogger({
+  level: 'error',
+  format: winston.format.combine(
+    winston.format.errors({ stack: true }),
+    winston.format.metadata(),
+    winston.format.json(),
+  ),  
+  defaultMeta: { service: 'example-service' },
+  transports: [
+    new winston.transports.File({ filename: 'logs.json' })
+  ]
 });
 
-// Comment out this section to see via terminal instead
 
-// const log = bunyan.createLogger({ 
-//   name: 'general-display-web', 
-// });
-
-const example = async (req,res) => {
-  for (let i = 0; i < 3; i++) {
-  	let response = await axios.get('https://www.example.com')
-  	log.info(`response status ${i} ${response.statusText}`)
+class ExampleCustomError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "ExampleCustomError";
   }
+}
 
-  res.send('ok')
+const example = (req,res) => { 
+  try {
+    throw new ExampleCustomError('ok this is a message of a custom error')
+    res.send('ok pass')
+  } catch (e) {
+    log.error(e)
+    res.send('ok fail')
+  }
 }
 
 let app = express();
